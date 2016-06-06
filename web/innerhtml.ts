@@ -92,9 +92,11 @@ document.addEventListener("DOMContentLoaded", (e) => {
     (state) => {
       container.innerHTML = renderMain(state);
 
-      const cells = container.querySelectorAll(".TableCell");
-      for (let i = 0; i < cells.length; i++) {
-        (cells[i] as HTMLElement).onclick = handleClick;
+      if (state.location === "table") {
+        const cells = container.querySelectorAll(".TableCell");
+        for (let i = 0; i < cells.length; i++) {
+          (cells[i] as HTMLElement).onclick = handleClick;
+        }
       }
     },
     (samples) => {
