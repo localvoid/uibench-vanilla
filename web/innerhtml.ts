@@ -80,24 +80,20 @@ function renderMain(data: AppState): string {
 uibench.init("Vanilla[innerHTML]", "1.0.0");
 
 function handleClick(e: MouseEvent): void {
-  console.log("Click", (e.target as HTMLElement).getAttribute("data-text"));
-  e.preventDefault();
-  e.stopPropagation();
+  if ((e.target as HTMLElement).className === "TableCell") {
+    console.log("Click", (e.target as HTMLElement).getAttribute("data-text"));
+    e.preventDefault();
+    e.stopPropagation();
+  }
 }
 
 document.addEventListener("DOMContentLoaded", (e) => {
   const container = document.querySelector("#App");
+  (container as HTMLElement).onclick = handleClick;
 
   uibench.run(
     (state) => {
       container.innerHTML = renderMain(state);
-
-      if (state.location === "table") {
-        const cells = container.querySelectorAll(".TableCell");
-        for (let i = 0; i < cells.length; i++) {
-          (cells[i] as HTMLElement).onclick = handleClick;
-        }
-      }
     },
     (samples) => {
       document.body.innerHTML = "<pre>" + JSON.stringify(samples, null, " ") + "</pre>";
