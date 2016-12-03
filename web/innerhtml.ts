@@ -30,7 +30,7 @@ function renderTable(data: TableState): string {
 
 function renderAnimBox(props: AnimBoxState): string {
   const style = `border-radius:${props.time % 10}px;` +
-                `background:rgba(0,0,0,${0.5 + ((props.time % 10) / 10)})`;
+    `background:rgba(0,0,0,${0.5 + ((props.time % 10) / 10)})`;
 
   return `<div class="AnimBox" style="${style}" data-id="${props.id}"></div>`;
 }
@@ -89,11 +89,16 @@ function handleClick(e: MouseEvent): void {
 
 document.addEventListener("DOMContentLoaded", (e) => {
   const container = document.querySelector("#App");
-  (container as HTMLElement).onclick = handleClick;
 
   uibench.run(
     (state) => {
       container.innerHTML = renderMain(state);
+      if (state.location === "table") {
+        const cells = container.querySelectorAll(".TableCell");
+        for (let i = 0; i < cells.length; i++) {
+          (cells[i] as HTMLTableCellElement).onclick = handleClick;
+        }
+      }
     },
     (samples) => {
       document.body.innerHTML = "<pre>" + JSON.stringify(samples, null, " ") + "</pre>";
